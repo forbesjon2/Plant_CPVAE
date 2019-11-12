@@ -1,10 +1,3 @@
-# pyroclast
+Apply Classifier plus VAEs code on plant phenomics
 
-A deep learning library by and for the Nebraska AI Research (NEAR) Lab
-
-## sub-packages
-
-- common
-- qualia
-- boost_resnet
-- svae
+CPVAE related code is from [Ellie](https://github.com/DrKwint/pyroclast) who is the instructor of cse879. 
