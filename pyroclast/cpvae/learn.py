@@ -20,8 +20,7 @@ def learn(
         data_dict,
         seed=None,
         latent_dim=128,
-        epochs=1000,
-        batch_size=64,
+        epochs=500,
         image_size=128,
         max_tree_depth=5,
         max_tree_leaf_nodes=16,
@@ -65,7 +64,6 @@ def learn(
     # define minibatch fn
     def run_minibatch(epoch, batch, is_train=True):
         x = tf.cast(batch['image'], tf.float32)
-        
         #print('x:', x)
         #labels = tf.cast(batch['attributes'][label_attr], tf.int32)
         labels = tf.cast(batch['label'], tf.int32)
@@ -124,7 +122,7 @@ def learn(
             #update_model_tree(data_dict['train'], model, epoch, label_attr, output_dir)
             update_model_tree(data_dict['train'], model, epoch, output_dir)
 
-        print('sample')
+        print('generate sample images')
         for i in range(num_samples):
             im = img_postprocess(np.squeeze(model.sample()))
             im.save(
@@ -132,5 +130,9 @@ def learn(
                              "epoch_{}_sample_{}.png".format(epoch, i)))
 
 if __name__ == "__main__":
-    learn(test_data)
+    import sys
+    if len(sys.argv)==1:
+        print('disc_logistic or l2')
+    else:
+        learn(test_data, distortion_fn=sys.argv[1])
 

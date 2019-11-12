@@ -4,9 +4,8 @@ import tensorflow as tf
 from matplotlib.pyplot import imread
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-from pyroclast.common.util import img_preprocess
-
+#import matplotlib.pyplot as plt
+#from pyroclast.common.util import img_preprocess
 #tf.compat.v1.enable_eager_execution()
 
 class DatasetBuilderG6(tfds.core.GeneratorBasedBuilder):
@@ -17,7 +16,7 @@ class DatasetBuilderG6(tfds.core.GeneratorBasedBuilder):
             description=("Thsi is the dataset for group 6 CPVAE project"),
             features=tfds.features.FeaturesDict({
                 "image_description": tfds.features.Text(),
-                "image": tfds.features.Image(shape=(254,189,3), dtype=tf.uint8),
+                "image": tfds.features.Image(shape=(128,128,3), dtype=tf.uint8),
                 "label": tfds.features.ClassLabel(num_classes=2),
             }),
             supervised_keys=("image", "label"),
@@ -56,25 +55,13 @@ class DatasetBuilderG6(tfds.core.GeneratorBasedBuilder):
                 }
                 yield img_fn, record
 
-def gen_data_dict(manual_dir='/work/schnablelab/cmiao/class_879/cse_479/project/data/dataset_builder_g6', 
-		download_dir='/work/schnablelab/cmiao/class_879/cse_479/project/data/downloaded_dir'):
+def gen_data_dict(manual_dir='/work/schnablelab/cmiao/class_879/Project/Data', 
+		download_dir='/work/schnablelab/cmiao/class_879/Project/Data/downloaded_dir'):
     dataset = DatasetBuilderG6()
     dc = tfds.download.DownloadConfig(manual_dir=manual_dir)
     dataset.download_and_prepare(download_config=dc, download_dir=download_dir)
-    g6 = dataset.as_dataset(batch_size=50)
+    g6 = dataset.as_dataset(batch_size=100, shuffle_files=True)
     #g6['train'] = g6['train'].map(lambda x: img_preprocess(x, 128)).batch(50)
     #g6['test'] = g6['test'].map(lambda x: img_preprocess(x, 128)).batch(50)
-    #print(dataset.info)
+    print(dataset.info)
     return g6
-
-
-
-
-
-
-
-
-
-
-
-
